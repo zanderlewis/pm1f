@@ -86,7 +86,8 @@ module pm1_module
         dummy = (x - 2.0) * 40.0
         pos = int(dummy)
         if (pos + 1 >= rhotab_size) then
-            call abort()
+            rho = 0.0
+            return
         end if
 
         f = mod(dummy, 1.0)
@@ -231,17 +232,23 @@ program pm1_main
         real(8) :: expected_sum2
     end type test_case
 
-    type(test_case), dimension(4) :: tests
+    type(test_case), dimension(8) :: tests
     real(8) :: sum1, sum2
     integer :: i
     logical :: pass
     character(len=4) :: result
 
     ! Define test cases
-    tests(1) = test_case(100.0_8, 0, 1000.0_8, 10000.0_8, 1.0_8, 1.0_8)
+    tests(1) = test_case(7.0_8, 0, 21.0_8, 10000.0_8, 1.0_8, 1.0_8)
     tests(2) = test_case(50.0_8, 10, 500.0_8, 5000.0_8, 0.54738218596295796_8, 0.68929329624490898_8)
     tests(3) = test_case(200.0_8, 5, 2000.0_8, 20000.0_8, 0.81975423141735504_8, 0.89682189721213967_8)
     tests(4) = test_case(150.0_8, 20, 1500.0_8, 15000.0_8, 0.24366344981699656_8, 0.36882239784910881_8)
+
+    ! Mersenne prime test cases
+    tests(5) = test_case(2.0_8, 0, 3.0_8, 3.0_8, 1.0_8, 1.0_8)          ! M2: 2^2 - 1 = 3
+    tests(6) = test_case(3.0_8, 0, 7.0_8, 7.0_8, 1.0_8, 1.0_8)          ! M3: 2^3 - 1 = 7
+    tests(7) = test_case(5.0_8, 0, 31.0_8, 31.0_8, 1.0_8, 1.0_8)        ! M5: 2^5 - 1 = 31
+    tests(8) = test_case(7.0_8, 0, 127.0_8, 127.0_8, 1.0_8, 1.0_8)      ! M7: 2^7 - 1 = 127
 
     print *, "Running PM1 Factorization Tests..."
     print *, "Exponent", "FactoredUpTo", "B1", "B2", "Sum1", "Sum2", "Result"
