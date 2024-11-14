@@ -1,0 +1,10 @@
+#!/usr/bin/env python3
+import subprocess
+
+def run():
+    subprocess.run(["mkdir", "-p", "dist"])
+    subprocess.run(["gfortran", "src/pm1.f90", "-o", "dist/pm1"])
+    subprocess.run(["dist/pm1"])
+    subprocess.run(["mv", "pm1_module.mod", "dist/pm1_module.mod"])
+
+run()
